@@ -1,0 +1,461 @@
+{
+  "name": "ArcByte-Startup-Copilot",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "91b9bfe1-d31a-4db4-b6d8-b765c262af09",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "20cdf7ab-e869-4105-8ec8-a8e98ca1791f",
+      "name": "When chat message received",
+      "webhookId": "97f3d8d6-3592-435a-aa5d-41757f03d620"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Launch an AI SaaS startup targeting small businesses.",
+        "options": {
+          "systemMessage": "You are the CEO Agent of a Multi-Agent Startup Copilot.\n\nYour responsibilities:\n\n1. Analyze the startup/business idea provided by the user.\n2. Identify the business goal.\n3. Break the project into tasks.\n4. Decide which agents should handle each task.\n5. Create an execution plan.\n\nAvailable Agents:\n- Research Agent\n- Sales Agent\n- Marketing Agent\n- Support Agent\n- Project Manager Agent\n- Reporting Agent\n\nReturn output in this format:\n\nBusiness Goal:\n...\n\nTask Breakdown:\n...\n\nAssigned Agents:\n...\n\nExecution Plan:\n..."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "37055014-c868-4c8c-9960-78ab724b059b",
+      "name": "CEO Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyze the following business plan and provide:\n\n- Research Summary\n- Competitor List\n- Industry Trends\n- Opportunities\n- Recommendations\n\nBusiness Plan:\n\n{{ $('CEO Agent').item.json.output }}",
+        "options": {
+          "systemMessage": "You are a market research expert.\n\nAnalyze:\n\n- Market Size\n- Competitors\n- Trends\n- Opportunities\n\nReturn:\n\nResearch Summary\nCompetitor List\nRecommendations"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        656,
+        0
+      ],
+      "id": "f4f7eefb-7403-4154-b079-66f60c948266",
+      "name": "Research Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        288,
+        208
+      ],
+      "id": "6fad6569-dee9-417f-a746-1d9d9bdde946",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "x64pPurRlDsKRjtb",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        528,
+        208
+      ],
+      "id": "118af7cd-2f04-4535-be44-155d555614cb",
+      "name": "Groq Chat Model1",
+      "credentials": {
+        "groqApi": {
+          "id": "x64pPurRlDsKRjtb",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Analyze the startup idea and create:\n\n- Target Audience\n- Ideal Customer Profile (ICP)\n- Lead Generation Strategy\n- Outreach Plan\n- Sales Recommendations",
+        "options": {
+          "systemMessage": "You are a Sales Agent.\n\nResponsibilities:\n- Lead Qualification\n- ICP Creation\n- Outreach Planning\n- Sales Recommendations\n\nReturn ONLY:\n\nTarget Audience:\nIdeal Customer Profile:\nLead Strategy:\nSales Plan:\nRecommendations:"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        992,
+        16
+      ],
+      "id": "f511a4b8-91cd-4b4e-bd7a-c15f60b38b26",
+      "name": "Sales Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        880,
+        208
+      ],
+      "id": "a2574257-1810-45e2-8a95-68dede1d6d34",
+      "name": "Groq Chat Model2",
+      "credentials": {
+        "groqApi": {
+          "id": "x64pPurRlDsKRjtb",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are a Marketing Agent.\n\nResponsibilities:\n- Blog Generation\n- Social Media Posts\n- Campaign Planning\n- Content Strategy\n\nReturn:\n\nMarketing Strategy:\nLinkedIn Post:\nTwitter Post:\nBlog Draft:\nCampaign Ideas:",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1344,
+        16
+      ],
+      "id": "9c5f38f3-4122-44e8-842b-9217154d26b7",
+      "name": "Marketing Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        224
+      ],
+      "id": "a3d5ecdd-72e3-40a6-99d7-f9e1eb22510e",
+      "name": "Groq Chat Model3",
+      "credentials": {
+        "groqApi": {
+          "id": "x64pPurRlDsKRjtb",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are a Customer Support Agent.\n\nResponsibilities:\n- FAQ Generation\n- Ticket Classification\n- Response Generation\n- Escalation Decisions\n\nReturn:\n\nSupport Response:\nPriority Level:\nResolution Recommendation:\nFAQs:",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1696,
+        16
+      ],
+      "id": "2d1bd348-b705-4fdd-9cdd-79bb702ff2b7",
+      "name": "Customer Support Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        224
+      ],
+      "id": "005ebe0c-6f56-4262-b61d-64bd85e8920b",
+      "name": "Groq Chat Model4",
+      "credentials": {
+        "groqApi": {
+          "id": "x64pPurRlDsKRjtb",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are a Project Manager Agent.\n\nResponsibilities:\n- Sprint Planning\n- Timeline Creation\n- Task Breakdown\n- Risk Analysis\n\nReturn:\n\nProject Plan:\nMilestones:\nTimeline:\nRisks:",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        2048,
+        16
+      ],
+      "id": "18bb24fe-fdc8-4050-9681-a3bef1f53f05",
+      "name": "Project Manager Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        224
+      ],
+      "id": "457d95ea-9c9a-419e-8770-70d4343862f0",
+      "name": "Groq Chat Model5",
+      "credentials": {
+        "groqApi": {
+          "id": "x64pPurRlDsKRjtb",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are a Reporting Agent.\n\nResponsibilities:\n- Executive Reporting\n- Recommendation Summary\n- Action Plan Creation\n\nReturn:\n\nExecutive Summary:\nKey Findings:\nAction Plan:\nRecommendations:",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        2400,
+        16
+      ],
+      "id": "079b6ea7-f471-4c5a-a6d3-cb090d2292d7",
+      "name": "Reporting Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        2272,
+        224
+      ],
+      "id": "253731cf-afac-42b5-9f28-27f53e21889b",
+      "name": "Groq Chat Model6",
+      "credentials": {
+        "groqApi": {
+          "id": "x64pPurRlDsKRjtb",
+          "name": "Groq account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "CEO Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "CEO Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CEO Agent": {
+      "main": [
+        [
+          {
+            "node": "Research Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "CEO Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Research Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research Agent": {
+      "main": [
+        [
+          {
+            "node": "Sales Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Sales Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sales Agent": {
+      "main": [
+        [
+          {
+            "node": "Marketing Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Marketing Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marketing Agent": {
+      "main": [
+        [
+          {
+            "node": "Customer Support Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Customer Support Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Support Agent": {
+      "main": [
+        [
+          {
+            "node": "Project Manager Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Project Manager Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Project Manager Agent": {
+      "main": [
+        [
+          {
+            "node": "Reporting Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reporting Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "39913db5-44f0-460a-9d7d-3e448a534678",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6c040a96e073a28550209204b234196e1ca3d419762ce5c2ff3a3096aac04263"
+  },
+  "id": "bh3aANCkDlEdwsAh",
+  "tags": []
+}
